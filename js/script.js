@@ -108,8 +108,8 @@ let inner = (f, p) => {
         let next_i = (i + 1) % n;
         let next = { x: f.points[next_i].x + f.dx, y: f.points[next_i].y + f.dy };
         
-        if (prev.y == cur.y && prev.y == p.y) {
-            if (prev.x <= p.x && p.x <= cur.x) {
+        if (prev.y == cur.y) {
+            if (prev.y == p.y && prev.x <= p.x && p.x <= cur.x) {
                 return true;
             }
         }
@@ -127,8 +127,11 @@ let inner = (f, p) => {
             }
         }
         else {
-            if (cur.y == p.y) {
-                if (prev.y < cur.y && cur.y < next.y || prev.y > cur.y && cur.y > next.y) {
+            if (cur.y == p.y && cur.x >= p.x) {
+                if (cur.x == p.x) {
+                    return true;
+                }
+                else if (prev.y < cur.y && cur.y < next.y || prev.y > cur.y && cur.y > next.y) {
                     res = !res;
                 }
             }
@@ -154,6 +157,7 @@ window.addEventListener('click', (e) => {
         }
     
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 1;
         drawPolygon(boatBottom);
         drawPolygon(boatSail);
         drawPolygon(boatFlag);
